@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Learn Angular</title>
+	<link rel="stylesheet" type="text/css" href="css/style.css">
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+	<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular.min.js"></script>
+</head>
+<body>
+	<div ng-app="myApp">
+		<div class="container py-5" ng-controller="searchName">
+			<input class="form-control mb-3" type="text" placeholder="Keyword..." ng-model="keyword">
+			<table class="table table-striped table-inverse table-hover table-person">
+				<thead>
+					<tr>
+						<th>Ordinal Number</th>
+						<th ng-click="sortBy('firstname')">Firstname</th>
+						<th ng-click="sortBy('lastname')">Lastname</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr ng-repeat="x in names | filter:keyword | orderBy:mySort">
+						<td>{{$index + 1}}</td>
+						<td>{{x.firstname}}</td>
+						<td>{{x.lastname}}</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+	</div>
+
+	<script src="js/script.js"></script>
+</body>
+</html>
