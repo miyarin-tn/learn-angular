@@ -34,7 +34,7 @@
 					<i class="fa fa-pencil w3-margin-right" aria-hidden="true" ng-hide="user.boolEdit" ng-click="editUser(user)"></i>
 					<i class="fa fa-trash" aria-hidden="true" ng-hide="user.boolEdit" ng-click="deleteUser(user.id)"></i>
 					<i class="fa fa-floppy-o w3-margin-right" aria-hidden="true" ng-show="user.boolEdit" ng-click="saveUser(user, user.id)"></i>
-					<i class="fa fa-times-circle" aria-hidden="true" ng-show="user.boolEdit" ng-click="cancelUser(user)"></i>
+					<i class="fa fa-times-circle" aria-hidden="true" ng-show="user.boolEdit" ng-click="cancelChange(user, $index)"></i>
 				</td>
 			</tr>
 		</tbody>
@@ -61,7 +61,10 @@
 				<label class="w3-text-grey"><b>Password</b></label>
 				<input class="w3-input w3-border w3-light-grey" type="password" ng-model="password">
 			</p>
-			<p><button class="w3-btn w3-blue-grey" ng-click="registerUser()">Register</button></p>
+			<p class="w3-clear">
+				<button class="w3-btn w3-left w3-blue-grey" ng-click="registerUser()">Register</button>
+				<button class="w3-btn w3-right w3-black" ng-click="cancelRegister()">Cancel</button>
+			</p>
 		</form>
 	</div>
 </div>
