@@ -5,9 +5,13 @@
 1. Install and Start Apache, MySQL service
 2. Import database
 
-    mysql -u [username] -p person < [sql file name].sql
+	mysql -u [username] -p [database name] < [sql file name].sql
 
-3. Access to http://localhost/[folder_project]/
+3. Change connect database [link project]/php/person.php
+
+	$connect = new mysqli('[host]', '[username]', '[password]', '[database]');
+
+4. Access to http://localhost/[folder_project]/
 
 ## Functions of Project
 

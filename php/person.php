@@ -2,7 +2,7 @@
 	header('Access-Control-Allow-Origin: *');
 	header('Content-Type: application/json');
 
-	$connect = new mysqli('localhost', 'thinh', 'Ngoc-2403', 'person');
+	$connect = new mysqli('localhost', 'thinh', 'thinh', 'person');
 
 	if(isset($_POST) && isset($_POST['action'])) {
 		if($_POST['action'] == 'register') {
