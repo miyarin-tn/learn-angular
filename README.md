@@ -5,7 +5,7 @@
 1. Install and Start Apache, MySQL service
 2. Import database
 
-    mysql -u <username> -p person < <sql file name>.sql
+    mysql -u [username] -p person < [sql file name].sql
 
 3. Access to http://localhost/[folder_project]/
 
