@@ -1,7 +1,22 @@
-// .table-person {
-// 	counter-reset: section;
-// }
-// .table-person tbody td:first-child:before {
-// 	counter-increment: section;
-// 	content: counter(section);
-// }
+.w3-dropdown-hover button:focus {
+	outline: none;
+}
+.table-users {
+	table-layout: fixed;
+}
+.table-users th, .table-users td {
+	text-align: center !important;
+	vertical-align: middle;
+}
+.table-users tr > td {
+	line-height: 28px;
+}
+.table-users input[type='text'], .table-users input[type='password'] {
+	line-height: 22px !important;
+}
+.input-no-edit {
+	border: none;
+	outline: none;
+	cursor: default;
+	background: transparent;
+}

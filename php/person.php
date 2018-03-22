@@ -1,19 +1,74 @@
 <?php
 	header('Access-Control-Allow-Origin: *');
-	header('Content-Type: application/json; charset=UTF-8');
+	header('Content-Type: application/json');
 
 	$connect = new mysqli('localhost', 'thinh', 'Ngoc-2403', 'person');
 
-	$result = $connect->query('SELECT * FROM info');
+	if(isset($_POST) && isset($_POST['action'])) {
+		if($_POST['action'] == 'register') {
+			$firstname = $_POST['firstname'];
+			$lastname = $_POST['lastname'];
+			$username = $_POST['username'];
+			$password = $_POST['password'];
+			$sql = $connect->query("INSERT INTO info (firstname, lastname, username, password) VALUES('" . $firstname . "', '" . $lastname . "', '" . $username . "', MD5('" . $password . "'))");
+			$sql_info = $connect->query("SELECT * FROM info");
+			$output = '';
+			while($result_info = $sql_info->fetch_array(MYSQLI_ASSOC)) {
+				if ($output != '') {
+					$output .= ', ';
+				}
+				$output .= '{"id": "' . $result_info["id"] . '", "firstname": "' . $result_info["firstname"] . '", "lastname":"' . $result_info["lastname"] . '", "username":"' . $result_info["username"] . '", "password":"' . $result_info["password"].'aaa' . '"}';
+			}
+			$connect->close();
 
-	$output = '';
-	while($rs = $result->fetch_array(MYSQLI_ASSOC)) {
-		if ($output != '') {
-			$output .= ', ';
+			echo('['.$output.']');
 		}
-		$output .= '{"id": "' . $rs["id"] . '", "firstname": "' . $rs["firstname"] . '", "lastname":"' . $rs["lastname"] . '", "username":"' . $rs["username"] . '", "password":"' . $rs["password"] . '"}';
-	}
-	$connect->close();
+		elseif ($_POST['action'] == 'edit' && isset($_POST['id'])) {
+			$id = $_POST['id'];
+			$firstname = $_POST['firstname'];
+			$lastname = $_POST['lastname'];
+			$username = $_POST['username'];
+			$password = $_POST['password'];
+			$sql = $connect->query("UPDATE info SET firstname='" . $firstname . "', lastname='" . $lastname . "', username='" . $username . "', password=MD5('" . $password . "') WHERE id=" . $id);
+			$sql_info = $connect->query("SELECT * FROM info");
+			$output = '';
+			while($result_info = $sql_info->fetch_array(MYSQLI_ASSOC)) {
+				if ($output != '') {
+					$output .= ', ';
+				}
+				$output .= '{"id": "' . $result_info["id"] . '", "firstname": "' . $result_info["firstname"].$action . '", "lastname":"' . $result_info["lastname"] . '", "username":"' . $result_info["username"] . '", "password":"' . $result_info["password"] . '"}';
+			}
+			$connect->close();
 
-	echo('['.$output.']');
+			echo('['.$output.']');
+		}
+		elseif($_POST['action'] == 'delete' && isset($_POST['id'])) {
+			$id = $_POST['id'];
+			$sql = $connect->query("DELETE FROM info WHERE id=" . $id);
+			$sql_info = $connect->query("SELECT * FROM info");
+			$output = '';
+			while($result_info = $sql_info->fetch_array(MYSQLI_ASSOC)) {
+				if ($output != '') {
+					$output .= ', ';
+				}
+				$output .= '{"id": "' . $result_info["id"] . '", "firstname": "' . $result_info["firstname"] . '", "lastname":"' . $result_info["lastname"] . '", "username":"' . $result_info["username"] . '", "password":"' . $result_info["password"] . '"}';
+			}
+			$connect->close();
+
+			echo('['.$output.']');
+		}
+	}
+	else {
+		$sql_info = $connect->query("SELECT * FROM info");
+		$output = '';
+		while($result_info = $sql_info->fetch_array(MYSQLI_ASSOC)) {
+			if ($output != '') {
+				$output .= ', ';
+			}
+			$output .= '{"id": "' . $result_info["id"] . '", "firstname": "' . $result_info["firstname"] . '", "lastname":"' . $result_info["lastname"] . '", "username":"' . $result_info["username"] . '", "password":"' . $result_info["password"] . '"}';
+		}
+		$connect->close();
+
+		echo('['.$output.']');
+	}
 ?>

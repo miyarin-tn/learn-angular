@@ -11,36 +11,58 @@ angular.module('myApp', ['ngRoute']).config(function($routeProvider) {
 	});
 }).controller('alterUser', function($scope, $http) {
 	$http.get('php/person.php').then(function(response) {
-		$scope.names = response.data;
+		$scope.users = response.data;
 	});
 	$scope.sortBy = function(x) {
 		$scope.mySort = x;
 	};
 	$scope.registerUser = function() {
-		var user = new Object();
-		user['firstname'] = $scope.firstname;
-		user['lastname'] = $scope.lastname;
-		user['username'] = $scope.username;
-		user['password'] = $scope.password;
-		if(user['firstname'] || user['lastname'] || user['username'] || user['password']) {
-			$scope.names.push(user);
-			$scope.showForm = true;
-			$scope.showRegister = false;
-		}
+		$http({
+			url: 'php/person.php',
+			method: 'POST',
+			headers: {
+				'Content-Type': 'application/x-www-form-urlencoded'
+			},
+			data: 'action=register&firstname=' + $scope.firstname + '&lastname=' + $scope.lastname + '&username=' + $scope.username + '&password=' + $scope.password
+		}).then(function(response) {
+			$scope.users = response.data;
+		});
+		$scope.showRegister = false;
 	};
-	$scope.numEdit = '';
-	$scope.editUser = function(id) {
-		$scope.numEdit = id;
-		console.log(id);
+	$scope.editUser = function(user) {
+		user.boolEdit = true;
+	};
+	$scope.saveUser = function(user, id) {
+		$http({
+			url: 'php/person.php',
+			method: 'POST',
+			headers: {
+				'Content-Type': 'application/x-www-form-urlencoded'
+			},
+			data: 'action=edit&id=' + id + '&firstname=' + user.firstname + '&lastname=' + user.lastname + '&username=' + user.username + '&password=' + user.password
+		}).then(function(response) {
+			$scope.users = response.data;
+			console.log(response.data);
+		});
+		user.boolEdit = false;
 	};
 	$scope.deleteUser = function(id) {
-		$scope.names.splice(id, 1);
+		$http({
+			url: 'php/person.php',
+			method: 'POST',
+			headers: {
+				'Content-Type': 'application/x-www-form-urlencoded'
+			},
+			data: 'action=delete&id=' + id
+		}).then(function(response) {
+			$scope.users = response.data;
+		});
+	};
+	$scope.cancelUser = function(user) {
+		user.boolEdit = false;
 	};
 	$scope.showForm = true;
-	$scope.changeUser = function(x) {
-		if (x === 'new') {
-			$scope.showRegister = true;
-			$scope.showForm = false;
-		}
+	$scope.createUser = function() {
+		$scope.showRegister = true;
 	};
 });

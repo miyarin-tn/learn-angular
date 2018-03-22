@@ -1,43 +1,45 @@
 <div ng-controller="alterUser">
 	<input class="w3-input" type="text" placeholder="Keyword..." ng-model="keyword">
-	<table class="w3-table-all w3-margin-top">
+	<table class="w3-table-all w3-margin-top table-users">
 		<thead>
 			<tr class="w3-green">
 				<th>Ordinal Number</th>
 				<th ng-click="sortBy('firstname')">Firstname</th>
 				<th ng-click="sortBy('lastname')">Lastname</th>
 				<th ng-click="sortBy('firstname')">Username</th>
-				<th ng-click="sortBy('lastname')">Password</th>
+				<th>Password</th>
 				<th>Action</th>
 			</tr>
 		</thead>
 		<tbody>
-			<tr ng-repeat="x in names | filter:keyword | orderBy:mySort" ng-switch on="numEdit">
+			<tr ng-repeat="user in users | filter:keyword | orderBy:mySort">
 				<td>{{$index + 1}}</td>
-				<td ng-switch-default>{{x.firstname}}</td>
-				<td ng-switch-default>{{x.lastname}}</td>
-				<td ng-switch-default>{{x.username}}</td>
-				<td ng-switch-default>{{x.password}}</td>
-				<td ng-switch-when="numEdit">
-					<input type="text" value="{{x.firstname}}" class="w3-input w3-border">
-				</td>
-				<td ng-switch-when="numEdit">
-					<input type="text" value="{{x.lastname}}" class="w3-input w3-border">
-				</td>
-				<td ng-switch-when="numEdit">
-					<input type="text" value="{{x.username}}" class="w3-input w3-border">
-				</td>
-				<td ng-switch-when="numEdit">
-					<input type="text" value="{{x.password}}" class="w3-input w3-border">
+				<td>
+					<span ng-hide="user.boolEdit">{{user.firstname}}</span>
+					<input type="text" ng-show="user.boolEdit" ng-model="user.firstname">
 				</td>
 				<td>
-					<i class="fa fa-pencil w3-margin-right" aria-hidden="true" ng-click="editUser('{{$index + 1}}')"></i>
-					<i class="fa fa-trash" aria-hidden="true" ng-click="deleteUser($index)"></i>
+					<span ng-hide="user.boolEdit">{{user.lastname}}</span>
+					<input type="text" ng-show="user.boolEdit" ng-model="user.lastname">
+				</td>
+				<td>
+					<span ng-hide="user.boolEdit">{{user.username}}</span>
+					<input type="text" ng-show="user.boolEdit" ng-model="user.username">
+				</td>
+				<td>
+					<input type="password" class="input-no-edit" ng-hide="user.boolEdit" ng-model="user.password" readonly="readonly">
+					<input type="password" ng-show="user.boolEdit" ng-model="user.password">
+				</td>
+				<td>
+					<i class="fa fa-pencil w3-margin-right" aria-hidden="true" ng-hide="user.boolEdit" ng-click="editUser(user)"></i>
+					<i class="fa fa-trash" aria-hidden="true" ng-hide="user.boolEdit" ng-click="deleteUser(user.id)"></i>
+					<i class="fa fa-floppy-o w3-margin-right" aria-hidden="true" ng-show="user.boolEdit" ng-click="saveUser(user, user.id)"></i>
+					<i class="fa fa-times-circle" aria-hidden="true" ng-show="user.boolEdit" ng-click="cancelUser(user)"></i>
 				</td>
 			</tr>
 		</tbody>
 	</table>
-	<button class="w3-btn w3-green w3-ripple w3-margin-top" ng-show="showForm" ng-click="changeUser('new')">Create New User</button>
+	<button class="w3-btn w3-green w3-ripple w3-margin-top" ng-hide="showRegister" ng-click="createUser()">Create New User</button>
 	<div ng-show="showRegister">
 		<div class="w3-container w3-blue-grey w3-margin-top">
 			<h6>Register Form</h6>
