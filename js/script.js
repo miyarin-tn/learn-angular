@@ -10,7 +10,13 @@ angular.module('myApp', ['ngRoute']).config(function($routeProvider) {
 		template: 'Child'
 	});
 }).controller('alterUser', function($scope, $http) {
-	$http.get('php/person.php').then(function(response) {
+	/*$http.post('php/person.php').then(function(response) {
+		$scope.users = response.data;
+	});*/
+	$http({
+		url: 'php/person.php',
+		method: 'POST'
+	}).then(function(response) {
 		$scope.users = response.data;
 	});
 	$scope.sortBy = function(x) {
