@@ -1,4 +1,4 @@
-angular.module('myApp', ['ngRoute']).config(function($routeProvider) {
+angular.module('myApp', ['ngRoute']).config(function($routeProvider, $locationProvider) {
 	$routeProvider
 	.when('/', {
 		templateUrl: 'htm/home.htm',
@@ -8,6 +8,10 @@ angular.module('myApp', ['ngRoute']).config(function($routeProvider) {
 	})
 	.when('/child', {
 		template: 'Child'
+	});
+	$locationProvider.html5Mode({
+		enabled: true,
+		requireBase: false
 	});
 }).controller('alterUser', function($scope, $http) {
 	$http.get('php/person.php').then(function(response) {
