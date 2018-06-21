@@ -14,20 +14,26 @@ angular.module('myApp', ['ngRoute']).config(function($routeProvider, $locationPr
 		requireBase: false
 	});
 }).controller('alterUser', function($scope, $http) {
-	$http.get('php/person.php').then(function(response) {
+	$http.get('api/users').then(function(response) {
 		$scope.users = response.data;
 	});
 	$scope.sortBy = function(x) {
 		$scope.mySort = x;
 	};
 	$scope.registerUser = function() {
+		var info = {
+			"firstname": $scope.firstname,
+			"lastname": $scope.lastname,
+			"username": $scope.username,
+			"password": $scope.password
+		};
 		$http({
 			url: 'php/person.php',
-			method: 'POST',
+			method: 'post',
 			headers: {
-				'Content-Type': 'application/x-www-form-urlencoded'
+				'Content-Type': 'application/json'
 			},
-			data: 'action=register&firstname=' + $scope.firstname + '&lastname=' + $scope.lastname + '&username=' + $scope.username + '&password=' + $scope.password
+			data: JSON.stringify(info)
 		}).then(function(response) {
 			$scope.users = response.data;
 		});
@@ -39,13 +45,19 @@ angular.module('myApp', ['ngRoute']).config(function($routeProvider, $locationPr
 	};
 	$scope.saveUser = function(user, id) {
 		delete user.backup;
+		var info = {
+			"firstname": user.firstname,
+			"lastname": user.lastname,
+			"username": user.username,
+			"password": user.password
+		}
 		$http({
-			url: 'php/person.php',
-			method: 'POST',
+			url: 'api/users/' + id,
+			method: 'PUT',
 			headers: {
-				'Content-Type': 'application/x-www-form-urlencoded'
+				'Content-Type': 'application/json'
 			},
-			data: 'action=edit&id=' + id + '&firstname=' + user.firstname + '&lastname=' + user.lastname + '&username=' + user.username + '&password=' + user.password
+			data: JSON.stringify(info)
 		}).then(function(response) {
 			$scope.users = response.data;
 		});
@@ -53,12 +65,8 @@ angular.module('myApp', ['ngRoute']).config(function($routeProvider, $locationPr
 	};
 	$scope.deleteUser = function(id) {
 		$http({
-			url: 'php/person.php',
-			method: 'POST',
-			headers: {
-				'Content-Type': 'application/x-www-form-urlencoded'
-			},
-			data: 'action=delete&id=' + id
+			url: 'api/users/' + id,
+			method: 'DELETE'
 		}).then(function(response) {
 			$scope.users = response.data;
 		});
